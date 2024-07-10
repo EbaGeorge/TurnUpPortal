@@ -44,7 +44,6 @@ public class Program
             Console.WriteLine("User has not logged in successfully. Test is failed");
         }
 
-
         // Create a new Time Module
 
         // Navigate to Time and Material Page
@@ -60,7 +59,7 @@ public class Program
         //Select Time from the TypeCode dropdown
         IWebElement typeCodeButton = driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]/span"));
         typeCodeButton.Click();
-        IWebElement timeOption = driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]/span/span[1]"));
+        IWebElement timeOption = driver.FindElement(By.XPath("//*[@id='TypeCode_listbox']/li[2]"));
         timeOption.Click();
 
         //Enter Code into Code text box
@@ -119,14 +118,16 @@ public class Program
         editedDescription.Clear();
         editedDescription.SendKeys("Time Module is edited");
 
-        //IWebElement editedOverlapTextbox = driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[4]/div/span[1]/span/input[1]"));
-        //editedOverlapTextbox.Click();
-        ////editedOverlapTextbox.Clear();
-        //IWebElement editedpriceTextbox = driver.FindElement(By.Id("Price"));
-        //editedpriceTextbox.Clear();
-        //editedpriceTextbox.SendKeys("200");
+        IWebElement editedOverlapTextbox = driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[4]/div/span[1]/span/input[1]"));
+        editedOverlapTextbox.Click();
+        //editedOverlapTextbox.Clear();
+        //editedOverlapTextbox.SendKeys("200");
+        IWebElement editedpriceTextbox = driver.FindElement(By.Id("Price"));
+        editedpriceTextbox.Clear();
+        editedOverlapTextbox.Click();
+        editedpriceTextbox.SendKeys("200");
 
-        //Click on the save button
+        //Click on the Save button
         IWebElement editedSaveButton = driver.FindElement(By.Id("SaveButton"));
         editedSaveButton.Click();
         Thread.Sleep(5000);
@@ -138,7 +139,7 @@ public class Program
         IWebElement editedTimeModuleCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
         IWebElement editedTimeModuleDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
         IWebElement editedTimeModulePrice = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[4]"));
-        if (editedTimeModuleCode.Text == "EditedTimeModule" | editedTimeModuleDescription.Text== "Time Module is edited"|editedTimeModulePrice.Text=="200")
+        if (editedTimeModuleCode.Text == "EditedTimeModule" | editedTimeModuleDescription.Text == "Time Module is edited" | editedTimeModulePrice.Text == "200")
         {
             Console.WriteLine("New Time module is edited. Test is passed");
         }
@@ -153,7 +154,8 @@ public class Program
         //Click on the delete button
         IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
         deleteButton.Click();
-        Thread.Sleep(3000);      
+        Thread.Sleep(3000);
+        //Handle pop up dialog box
         driver.SwitchTo().Alert().Accept();
         Thread.Sleep(3000);
         //Check if the time module is deleted
@@ -166,6 +168,6 @@ public class Program
         {
             Console.WriteLine("New time module is not deleted. Test is failed");
         }
-
+       
     }
 }
