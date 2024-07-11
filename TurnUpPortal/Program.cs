@@ -109,6 +109,13 @@ public class Program
         editButton.Click();
 
         //Edit the TypeCode
+        IWebElement editedTypecode = driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]/span/span[1]"));
+        editedTypecode.Click();
+        Thread.Sleep(3000);
+        IWebElement editedOptions = driver.FindElement(By.XPath("//*[@id='TypeCode_listbox']/li[1]"));
+        editedOptions.Click();
+
+        //Edit the Code
         IWebElement editedCode = driver.FindElement(By.Id("Code"));
         editedCode.Clear();
         editedCode.SendKeys("EditedTimeModule");
@@ -136,10 +143,11 @@ public class Program
         goToLastPage1.Click();
 
         //Check if time module is edited either by code, description or price per unit
-        IWebElement editedTimeModuleCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-        IWebElement editedTimeModuleDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
-        IWebElement editedTimeModulePrice = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[4]"));
-        if (editedTimeModuleCode.Text == "EditedTimeModule" | editedTimeModuleDescription.Text == "Time Module is edited" | editedTimeModulePrice.Text == "200")
+        IWebElement editedTimeModuleCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
+        IWebElement editedTimeModuleDescription = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[3]"));
+        IWebElement editedTimeModulePrice = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[4]"));
+        IWebElement editedTimeModuleType = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[2]"));
+        if (editedTimeModuleCode.Text == "EditedTimeModule" | editedTimeModuleDescription.Text == "Time Module is edited" | editedTimeModulePrice.Text == "200" | editedTimeModuleType.Text=="M")
         {
             Console.WriteLine("New Time module is edited. Test is passed");
         }
