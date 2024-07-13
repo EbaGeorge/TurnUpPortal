@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,8 @@ namespace TurnUpPortal.Pages
             IWebElement helloHari = driver.FindElement(By.XPath("//*[@id='logoutForm']/ul/li/a"));
 
             //Check if the text of the web element is "Hello hari"
-            if (helloHari.Text == "Hello hari!")
-            {
-                Console.WriteLine("User has logged in successfully. Test is passed");
-            }
-            else
-            {
-                Console.WriteLine("User has not logged in successfully. Test is failed");
-            }
+            Assert.That(helloHari.Text == "Hello hari!", "User has not logged in successfully. Test is failed");
+            
 
         }
     }

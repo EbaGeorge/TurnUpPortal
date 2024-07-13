@@ -5,11 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium.Support.UI;
+using System.Linq.Expressions;
+using NUnit.Framework;
 
 namespace TurnUpPortal.Pages
 {
     public class LoginPage
     {
+
         //Functions that allow user to login to TurnUp portal
         public void LoginActions(IWebDriver driver)
         {
@@ -28,12 +32,18 @@ namespace TurnUpPortal.Pages
             IWebElement passwordTextbox = driver.FindElement(By.Id("Password"));
             passwordTextbox.SendKeys("123123");
 
-            //Identify the Login button and click on it
-            IWebElement loginButton = driver.FindElement(By.XPath("//*[@id='loginForm']/form/div[3]/input[1]"));
-            loginButton.Click();
-
-            //Sometimes the web driver is slower than the code, so we use thread
-            Thread.Sleep(2000);
+            //Exception Handling
+            try
+            {
+                //Identify the Login button and click on it
+                IWebElement loginButton = driver.FindElement(By.XPath("//*[@id='loginForm']/form/div[3]/input[1]"));
+                loginButton.Click();
+            }
+            catch(ElementNotInteractableException ex) 
+            {
+                Assert.Fail("Login Button is not clickable" + ex.Message);
+            }
+            
 
         }
     }
