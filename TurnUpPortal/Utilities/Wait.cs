@@ -14,12 +14,12 @@ namespace TurnUpPortal.Utilities
         {
             if (locatorType == "XPath")
             {
-                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
+                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(locatorValue)));
             }
             if(locatorType =="Id")
             {
-                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
+                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.Id(locatorValue)));
             }
         }
@@ -27,12 +27,12 @@ namespace TurnUpPortal.Utilities
         {
             if (locatorType == "XPath")
             {
-                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
+                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(locatorValue)));
             }
             if (locatorType == "Id")
             {
-                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
+                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id(locatorValue)));
             }
         }

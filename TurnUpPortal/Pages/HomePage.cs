@@ -28,5 +28,16 @@ namespace TurnUpPortal.Pages
             
 
         }
+        public void NavigationToEmployeesPage(IWebDriver driver)
+        {
+            //Navigate to Employees page
+            IWebElement administartionTabEmployee = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
+            administartionTabEmployee.Click();
+
+            //Click on Employees tab
+            IWebElement employeeTab = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[2]/a"));
+            employeeTab.Click();
+
+        }
     }
 }
