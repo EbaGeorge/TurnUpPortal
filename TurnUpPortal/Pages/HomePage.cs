@@ -5,18 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TurnUpPortal.Utilities;
 
 namespace TurnUpPortal.Pages
 {
-    public class HomePage
+    public class HomePage:Wait
     {
         public void NavigationToTimeAndMaterialPage(IWebDriver driver)
         {
             // Navigate to Time and Material Page
             IWebElement administartionTab = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
             administartionTab.Click();
+
+            //Click on Time and Material Page
             IWebElement timeAndMaterialModule = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
+            Wait.WaitToBeClickable(driver, "XPath","/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a", 6);
             timeAndMaterialModule.Click();
+
+            //Fluent wait waiting till grouping header is visible
+            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
         }
         public void UserVerification(IWebDriver driver)
         {
@@ -25,8 +32,7 @@ namespace TurnUpPortal.Pages
 
             //Check if the text of the web element is "Hello hari"
             Assert.That(helloHari.Text == "Hello hari!", "User has not logged in successfully. Test is failed");
-            
-
+           
         }
         public void NavigationToEmployeesPage(IWebDriver driver)
         {

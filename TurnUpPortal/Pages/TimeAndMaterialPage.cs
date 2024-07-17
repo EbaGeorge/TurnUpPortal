@@ -11,9 +11,9 @@ using TurnUpPortal.Utilities;
 
 namespace TurnUpPortal.Pages
 {
-    public class TimeAndMaterialPage:Wait
+    public class TimeAndMaterialPage : Wait
     {
-        private readonly By createNewButtonLocator= By.XPath("//*[@id='container']/p/a");
+        private readonly By createNewButtonLocator = By.XPath("//*[@id='container']/p/a");
         private readonly By typeCodeButtonLocator = By.XPath("//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]/span");
         private readonly By timeOptionLocator = By.XPath("//*[@id='TypeCode_listbox']/li[2]");
         private readonly By codeTextboxLocator = By.Id("Code");
@@ -28,19 +28,22 @@ namespace TurnUpPortal.Pages
         private readonly By materialOptionLocator = By.XPath("//*[@id='TypeCode_listbox']/li[1]");
         private readonly By deleteButtonLocator = By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span");
 
+        //Method To Create Time Record
         public void CreateNewTimeRecord(IWebDriver driver)
         {
             try
             {
                 // Click on Create Button
                 IWebElement createNewButton = driver.FindElement(createNewButtonLocator);
+                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='container']/p/a",6);
                 createNewButton.Click();
             }
-            catch(ElementNotSelectableException ex)
+            catch (Exception ex)
             {
                 Assert.Fail("Create New Button is not selectable" + ex.Message);
             }
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]/span", 10);
+            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]/span", 5);
+
             //Select Time from the TypeCode dropdown
             IWebElement typeCodeButton = driver.FindElement(typeCodeButtonLocator);
             typeCodeButton.Click();
@@ -70,72 +73,73 @@ namespace TurnUpPortal.Pages
             {
                 Assert.Fail("Price textbox is not interactable" + ex.Message);
             }
-            
+
             //File Upload
             IWebElement fileInput = driver.FindElement(fileInputLocator);
             fileInput.SendKeys(@"D:\Eba\Industry Connect\DemoImage.jpg");
-            //Thread.Sleep(5000);
-            WebDriverWait wait=new WebDriverWait(driver,TimeSpan.FromSeconds(7));
-            wait.Until(ExpectedConditions.ElementToBeClickable(saveButtonLocator));
             
+            //Explicit Wait
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(7));
+            wait.Until(ExpectedConditions.ElementToBeClickable(saveButtonLocator));
+
             //Click on Save button
             IWebElement saveButton = driver.FindElement(saveButtonLocator);
             saveButton.Click();
-            driver.Navigate().Refresh();
+
+            //Fluent wait, waiting till group header is visible
+            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
 
             //Click on Go to last Page button
-            //Thread.Sleep(5000);
-            //WebDriverWait waitLast = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-            // waitLast.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span")));
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 10);
             try
             {
                 IWebElement goToLastPage = driver.FindElement(goToLastPageLocator);
+                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 goToLastPage.Click();
             }
-            catch(ElementNotSelectableException ex)
-            {
+            catch (Exception ex)
+            { 
                 Assert.Fail("GoToLastPage Button is not selectable" + ex.Message);
             }
 
             //Exception handling for unable to locate exception
-            //Thread.Sleep(2000);
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 5);
+
+            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
             try
             {
                 //Check if a new Time module is created successfully
                 IWebElement newTimeModule = driver.FindElement(codeLocator);
-                
+                Wait.WaitToBeVisble(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 10);
             }
-            catch(ElementNotSelectableException ex)
+            catch (Exception ex)
             {
                 Assert.Fail("New Time Record is not selectable" + ex.Message);
             }
         }
+
+        //Method To Edit Time Record
         public void EditTimeRecord(IWebDriver driver)
         {
-            //Thread.Sleep(5000);
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 10);
             try
             {
                 //Go To Last Page Button
                 IWebElement editedLastPageButton = driver.FindElement(goToLastPageLocator);
+                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 editedLastPageButton.Click();
             }
-            catch (ElementNotSelectableException ex)
+            catch (Exception ex)
             {
                 Assert.Fail("GoToLastPage Button is not selectable" + ex.Message);
             }
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[5]/a[1]", 5);
+
             //Click on Edit Button
             IWebElement editButton = driver.FindElement(editButtonLocator);
+            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[5]/a[1]", 5);
             editButton.Click();
 
             //Edit the TypeCode
             IWebElement editedTypecode = driver.FindElement(typeCodeButtonLocator);
             editedTypecode.Click();
             Wait.WaitToBeClickable(driver, "XPath", "//*[@id='TypeCode_listbox']/li[1]", 5);
-            //Thread.Sleep(2000);
             IWebElement editedOptions = driver.FindElement(materialOptionLocator);
             editedOptions.Click();
 
@@ -149,6 +153,7 @@ namespace TurnUpPortal.Pages
             editedDescription.Clear();
             editedDescription.SendKeys("Time Module is edited");
             Wait.WaitToBeClickable(driver, "XPath", "//*[@id='TimeMaterialEditForm']/div/div[4]/div/span[1]/span/input[1]", 5);
+            
             //Edit Price
             try
             {
@@ -164,98 +169,99 @@ namespace TurnUpPortal.Pages
             {
                 Assert.Fail("Price textbox is not interactable" + ex.Message);
             }
+           
             //File Upload
             IWebElement fileInput = driver.FindElement(fileInputLocator);
             fileInput.SendKeys(@"D:\Eba\Industry Connect\Demo2.jpg");
-            //Thread.Sleep(5000);
+
             Wait.WaitToBeClickable(driver, "Id", "SaveButton", 5);
             //Click on the Save button
             IWebElement editedSaveButton = driver.FindElement(saveButtonLocator);
             editedSaveButton.Click();
-            //Thread.Sleep(5000);
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 10);
+            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"container\"]/p/a", 6);
+         
             driver.Navigate().Refresh();
-            //Thread.Sleep(2000);
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span",10);
+           
+            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
+    
             try
             {
                 //Go To Last Page
                 IWebElement editedlastpage = driver.FindElement(goToLastPageLocator);
+                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 editedlastpage.Click();
-
             }
-            catch (ElementNotSelectableException ex)
+            catch (Exception ex)
             {
                 Assert.Fail("GoToLastPage Button is not selectable" + ex.Message);
             }
 
-            //Thread.Sleep(2000);
             Wait.WaitToBeVisble(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 5);
             try
             {
                 //Check if time module is edited
                 IWebElement editedTimeModuleCode = driver.FindElement(codeLocator);
-                //Assert.That(editedTimeModuleCode.Text == "EditedTimeModule", "New time module is not edited. Test is failed");
             }
-            catch (ElementNotSelectableException ex)
+            catch (Exception ex)
             {
                 Assert.Fail("Edited Time record is not visible" + ex.Message);
             }
 
         }
+
+        //Method To Delete Time Record
         public void DeleteTimeRecord(IWebDriver driver)
         {
             //Delete newly created time module 
-            //Thread.Sleep(5000);
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 10);
             try
             {
                 //Go To Last Page Button
                 IWebElement deleteLastPageButton = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));
+                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 deleteLastPageButton.Click();
             }
-            catch(ElementNotSelectableException ex)
+            catch (Exception ex)
             {
-                Assert.Fail("GoToLastPage Button is not selectable"+ex.Message);
+                Assert.Fail("GoToLastPage Button is not selectable" + ex.Message);
             }
 
-            //Thread.Sleep(3000);
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[5]/a[2]",5);
+           
+            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[5]/a[2]", 5);
             //Click on the delete button
             IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
             deleteButton.Click();
-            //Thread.Sleep(3000);
+            
             //Handle pop up dialog box
             driver.SwitchTo().Alert().Accept();
-            //Thread.Sleep(3000);
+          
             driver.Navigate().Refresh();
-            //Thread.Sleep(2000);
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 5);
+          
+            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
+            
             try
             {
                 //Go To Last Page
                 IWebElement deleteLastPageButtonAfter = driver.FindElement(deleteButtonLocator);
+                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 deleteLastPageButtonAfter.Click();
             }
-            catch (ElementNotSelectableException ex)
+            catch (Exception ex)
             {
                 Assert.Fail("GoToLastPageButton is not selectable" + ex.Message);
             }
-            //Thread.Sleep(3000);
+          
             Wait.WaitToBeVisble(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 5);
             try
             {
                 //Check if the time module is deleted
                 IWebElement lastTimeModule = driver.FindElement(codeLocator);
-                //Assert.That(lastTimeModule.Text != "EditedTimeModule", "New time module is not deleted. Test is failed");
+                
             }
-            catch(ElementNotSelectableException ex)
+            catch (Exception ex)
             {
                 Assert.Fail("Not able to locate the last row" + ex.Message);
             }
         }
-       
-        
-         
+
     }
 }
