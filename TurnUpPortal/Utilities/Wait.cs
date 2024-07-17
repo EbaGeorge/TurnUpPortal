@@ -14,25 +14,25 @@ namespace TurnUpPortal.Utilities
         {
             if (locatorType == "XPath")
             {
-                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath(locatorValue)));
             }
             if(locatorType =="Id")
             {
-                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.Id(locatorValue)));
             }
         }
-        public static void WaitToBeVisble(IWebDriver driver,string locatorType,string locatorValue,int seconds)
+        public static void WaitToBeVisible(IWebDriver driver,string locatorType,string locatorValue,int seconds)
         {
             if (locatorType == "XPath")
             {
-                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(locatorValue)));
             }
             if (locatorType == "Id")
             {
-                WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id(locatorValue)));
             }
         }

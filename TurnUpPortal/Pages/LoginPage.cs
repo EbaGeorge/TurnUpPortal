@@ -23,6 +23,7 @@ namespace TurnUpPortal.Pages
 
             //Fit the chrome according to the screen resolution
             driver.Manage().Window.Maximize();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
 
             //Identify the Username textbox and enter the username
             IWebElement usernameTextbox = driver.FindElement(By.Id("UserName"));

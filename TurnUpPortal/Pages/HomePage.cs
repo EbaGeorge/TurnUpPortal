@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +12,30 @@ namespace TurnUpPortal.Pages
 {
     public class HomePage:Wait
     {
+        private readonly By timeMaterialOptionLocator = By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a");
         public void NavigationToTimeAndMaterialPage(IWebDriver driver)
         {
-            // Navigate to Time and Material Page
-            IWebElement administartionTab = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
-            administartionTab.Click();
+            try
+            {
+                // Navigate to Time and Material Page
+                IWebElement administartionTab = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
+                administartionTab.Click();
 
-            //Click on Time and Material Page
-            IWebElement timeAndMaterialModule = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
-            Wait.WaitToBeClickable(driver, "XPath","/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a", 6);
-            timeAndMaterialModule.Click();
+                WebDriverWait webDriverWait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                webDriverWait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(timeMaterialOptionLocator));
 
-            //Fluent wait waiting till grouping header is visible
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
+                //Click on Time and Material Page
+                IWebElement timeAndMaterialModule = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
+                timeAndMaterialModule.Click();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("TurnUpPortal Time and Material Page is not loaded"+ ex.Message);
+            }
+           
         }
+
+
         public void UserVerification(IWebDriver driver)
         {
             //Check if the user has logged in successfully
@@ -34,6 +45,8 @@ namespace TurnUpPortal.Pages
             Assert.That(helloHari.Text == "Hello hari!", "User has not logged in successfully. Test is failed");
            
         }
+
+
         public void NavigationToEmployeesPage(IWebDriver driver)
         {
             //Navigate to Employees page

@@ -102,7 +102,7 @@ namespace TurnUpPortal.Pages
             {
                 Assert.Fail("GoToLastPage button is not selectable"+ex.Message);
             }
-            Wait.WaitToBeVisble(driver,"XPath","//*[@id='usersGrid']/div[3]/table/tbody/tr[last()]/td[1]",10);
+            Wait.WaitToBeVisible(driver,"XPath","//*[@id='usersGrid']/div[3]/table/tbody/tr[last()]/td[1]",10);
             //Thread.Sleep(2000);
             try
             {

@@ -33,20 +33,22 @@ namespace TurnUpPortal.Pages
         {
             try
             {
+                Wait.WaitToBeVisible(driver, "XPath", "//*[@id='container']/p/a",6);
+
                 // Click on Create Button
                 IWebElement createNewButton = driver.FindElement(createNewButtonLocator);
-                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='container']/p/a",6);
                 createNewButton.Click();
             }
             catch (Exception ex)
             {
                 Assert.Fail("Create New Button is not selectable" + ex.Message);
             }
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]/span", 5);
 
             //Select Time from the TypeCode dropdown
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]/span", 6);
             IWebElement typeCodeButton = driver.FindElement(typeCodeButtonLocator);
             typeCodeButton.Click();
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='TypeCode_listbox']/li[2]", 6);
             IWebElement timeOption = driver.FindElement(timeOptionLocator);
             timeOption.Click();
 
@@ -54,46 +56,39 @@ namespace TurnUpPortal.Pages
             IWebElement codeTextbox = driver.FindElement(codeTextboxLocator);
             codeTextbox.SendKeys("TimeModule");
 
-            //Enter Description intp Description text box
+            //Enter Description into Description text box
             IWebElement descriptionTextbox = driver.FindElement(descriptionTextboxLocator);
             descriptionTextbox.SendKeys("New Time Module");
 
             //Enter Price per unit into Price text box
-            //Identify overlapping element
-            try
-            {
-                IWebElement overlapTextbox = driver.FindElement(overlapTextboxLocator);
-                overlapTextbox.Click();
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='TimeMaterialEditForm']/div/div[4]/div/span[1]/span/input[1]", 6);
+           
+            //Identify overlapping element        
+            IWebElement overlapTextbox = driver.FindElement(overlapTextboxLocator);
+            overlapTextbox.Click();
 
-                //Identifying the price web element
-                IWebElement priceTextbox = driver.FindElement(priceTextboxLocator);
-                priceTextbox.SendKeys("100");
-            }
-            catch (ElementNotInteractableException ex)
-            {
-                Assert.Fail("Price textbox is not interactable" + ex.Message);
-            }
-
+            //Identifying the price web element
+            IWebElement priceTextbox = driver.FindElement(priceTextboxLocator);
+            priceTextbox.SendKeys("100");
+            
             //File Upload
             IWebElement fileInput = driver.FindElement(fileInputLocator);
             fileInput.SendKeys(@"D:\Eba\Industry Connect\DemoImage.jpg");
             
             //Explicit Wait
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(7));
-            wait.Until(ExpectedConditions.ElementToBeClickable(saveButtonLocator));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            wait.Until(ExpectedConditions.ElementIsVisible(saveButtonLocator));
 
             //Click on Save button
             IWebElement saveButton = driver.FindElement(saveButtonLocator);
             saveButton.Click();
-
-            //Fluent wait, waiting till group header is visible
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
-
+            //Thread.Sleep(1000);
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]", 6);
             //Click on Go to last Page button
             try
             {
+                Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 IWebElement goToLastPage = driver.FindElement(goToLastPageLocator);
-                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 goToLastPage.Click();
             }
             catch (Exception ex)
@@ -101,14 +96,11 @@ namespace TurnUpPortal.Pages
                 Assert.Fail("GoToLastPage Button is not selectable" + ex.Message);
             }
 
-            //Exception handling for unable to locate exception
-
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
             try
             {
                 //Check if a new Time module is created successfully
+                Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 6);
                 IWebElement newTimeModule = driver.FindElement(codeLocator);
-                Wait.WaitToBeVisble(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 10);
             }
             catch (Exception ex)
             {
@@ -119,11 +111,13 @@ namespace TurnUpPortal.Pages
         //Method To Edit Time Record
         public void EditTimeRecord(IWebDriver driver)
         {
+            Thread.Sleep(1000);
+            //Wait.WaitToBeVisible(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]", 6);
             try
             {
                 //Go To Last Page Button
+                Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 IWebElement editedLastPageButton = driver.FindElement(goToLastPageLocator);
-                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 editedLastPageButton.Click();
             }
             catch (Exception ex)
@@ -131,15 +125,16 @@ namespace TurnUpPortal.Pages
                 Assert.Fail("GoToLastPage Button is not selectable" + ex.Message);
             }
 
-            //Click on Edit Button
+           //Click on Edit Button
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[5]/a[1]", 5);
             IWebElement editButton = driver.FindElement(editButtonLocator);
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[5]/a[1]", 5);
             editButton.Click();
 
             //Edit the TypeCode
+            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]/span", 7);
             IWebElement editedTypecode = driver.FindElement(typeCodeButtonLocator);
             editedTypecode.Click();
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='TypeCode_listbox']/li[1]", 5);
+            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='TypeCode_listbox']/li[1]", 7);
             IWebElement editedOptions = driver.FindElement(materialOptionLocator);
             editedOptions.Click();
 
@@ -152,14 +147,14 @@ namespace TurnUpPortal.Pages
             IWebElement editedDescription = driver.FindElement(descriptionTextboxLocator);
             editedDescription.Clear();
             editedDescription.SendKeys("Time Module is edited");
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='TimeMaterialEditForm']/div/div[4]/div/span[1]/span/input[1]", 5);
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='TimeMaterialEditForm']/div/div[4]/div/span[1]/span/input[1]", 5);
             
             //Edit Price
             try
             {
                 IWebElement editedOverlapTextbox = driver.FindElement(overlapTextboxLocator);
                 editedOverlapTextbox.Click();
-                Wait.WaitToBeVisble(driver, "Id", "Price", 5);
+                Wait.WaitToBeVisible(driver, "Id", "Price", 5);
                 IWebElement editedpriceTextbox = driver.FindElement(priceTextboxLocator);
                 editedpriceTextbox.Clear();
                 editedOverlapTextbox.Click();
@@ -174,21 +169,19 @@ namespace TurnUpPortal.Pages
             IWebElement fileInput = driver.FindElement(fileInputLocator);
             fileInput.SendKeys(@"D:\Eba\Industry Connect\Demo2.jpg");
 
-            Wait.WaitToBeClickable(driver, "Id", "SaveButton", 5);
+            Wait.WaitToBeVisible(driver, "Id", "SaveButton", 5);
             //Click on the Save button
             IWebElement editedSaveButton = driver.FindElement(saveButtonLocator);
             editedSaveButton.Click();
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"container\"]/p/a", 6);
-         
-            driver.Navigate().Refresh();
-           
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
-    
+            Thread.Sleep(1000);
+           // Wait.WaitToBeVisible(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]", 6);
             try
             {
                 //Go To Last Page
+                Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
+               
                 IWebElement editedlastpage = driver.FindElement(goToLastPageLocator);
-                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
+              
                 editedlastpage.Click();
             }
             catch (Exception ex)
@@ -196,7 +189,7 @@ namespace TurnUpPortal.Pages
                 Assert.Fail("GoToLastPage Button is not selectable" + ex.Message);
             }
 
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 5);
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 5);
             try
             {
                 //Check if time module is edited
@@ -212,12 +205,14 @@ namespace TurnUpPortal.Pages
         //Method To Delete Time Record
         public void DeleteTimeRecord(IWebDriver driver)
         {
+            Thread.Sleep(1000);
+            //Wait.WaitToBeVisible(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]", 6);
             //Delete newly created time module 
             try
             {
                 //Go To Last Page Button
+                Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 IWebElement deleteLastPageButton = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));
-                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 deleteLastPageButton.Click();
             }
             catch (Exception ex)
@@ -226,7 +221,7 @@ namespace TurnUpPortal.Pages
             }
 
            
-            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[5]/a[2]", 5);
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[5]/a[2]", 5);
             //Click on the delete button
             IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
             deleteButton.Click();
@@ -235,14 +230,14 @@ namespace TurnUpPortal.Pages
             driver.SwitchTo().Alert().Accept();
           
             driver.Navigate().Refresh();
-          
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[1]", 6);
-            
+            Thread.Sleep(1000);
+           // Wait.WaitToBeVisible(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]", 6);
             try
             {
+                Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
                 //Go To Last Page
                 IWebElement deleteLastPageButtonAfter = driver.FindElement(deleteButtonLocator);
-                Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 6);
+                
                 deleteLastPageButtonAfter.Click();
             }
             catch (Exception ex)
@@ -250,7 +245,7 @@ namespace TurnUpPortal.Pages
                 Assert.Fail("GoToLastPageButton is not selectable" + ex.Message);
             }
           
-            Wait.WaitToBeVisble(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 5);
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 5);
             try
             {
                 //Check if the time module is deleted
