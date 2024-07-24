@@ -92,7 +92,7 @@ namespace TurnUpPortal.Pages
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             wait.Until(ExpectedConditions.ElementIsVisible(saveButtonLocator));
 
-            //Click on Save button
+            //Click on the Save button
             saveButton = driver.FindElement(saveButtonLocator);
             saveButton.Click();
             Wait.WaitToBeVisible(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]", 6);
